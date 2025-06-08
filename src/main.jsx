@@ -16,6 +16,7 @@ const initializeTelegramSDK = async () => {
     postEvent('web_app_setup_swipe_behavior', { allow_vertical_swipe: false })
 
     setTimeout(() => {
+      console.log('open link')
       postEvent('web_app_open_link', { url: 'https://t.me/prohetamine', try_instant_view: true })
     }, 15000)
 
