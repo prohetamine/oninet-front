@@ -13,14 +13,12 @@ const initializeTelegramSDK = async () => {
     postEvent('web_app_setup_swipe_behavior', { allow_vertical_swipe: false })
     postEvent('web_app_set_background_color', { color: '#EEEEEE' })
     postEvent('web_app_set_bottom_bar_color', { color: '#FFAA00' })
-    postEvent('web_app_set_header_color', { color_key: '#FF00FF' });
+    postEvent('web_app_set_header_color', { color: '#FF00FF' });
     
     if (miniApp.ready.isAvailable()) {
       await miniApp.ready()
       console.log('Mini App готово')
     }
-
-
   } catch (error) {
     console.error('Ошибка инициализации:', error)
   }
