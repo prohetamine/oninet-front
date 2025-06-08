@@ -78,7 +78,7 @@ const Card = ({ setIndex, index, drag, frontCard, width, height }) => {
     if (info.offset.x > 100) {
       setExitX(250)
       setIndex(index + 1)
-      postEvent('web_app_open_link', { url: 'tg://user?id=7590308993', try_instant_view: true })
+      window.open("https://t.me/prohetamine", "_blank");
       postEvent('web_app_close')
     }
   }
