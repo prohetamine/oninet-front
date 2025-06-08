@@ -73,6 +73,8 @@ Error generating stack: `+a.message+`
   background-image: url("${n=>n.src}");
   background-size: cover;
   background-position: center center;
+  -webkit-filter: drop-shadow(0px 0px 10px rgba(0, 0, 0, 0.1));
+  filter: drop-shadow(0px 0px 10px rgba(0, 0, 0, 0.1));
 `,nb=ll(xn.div)`
   width: 65px;
   height: 65px;
