@@ -16,6 +16,7 @@ const Head = styled.div`
   top: 0px;
   left: 0px;
   z-index: 999999;
+  opacity: 0.5;
 `
 
 const Nav = styled.div`
@@ -26,6 +27,7 @@ const Nav = styled.div`
   bottom: 0px;
   left: 0px;
   z-index: 999999;
+  opacity: 0.5;
 `
 
 const Card = ({ setIndex, index, drag, frontCard, width, height }) => {
