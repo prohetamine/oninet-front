@@ -15,6 +15,7 @@ const initializeTelegramSDK = async () => {
     postEvent('web_app_setup_main_button', { is_visible: false })
     postEvent('web_app_setup_swipe_behavior', { allow_vertical_swipe: false })
     postEvent('web_app_set_background_color', { color: '#EEEEEE' })
+    postEvent('web_app_set_bottom_bar_color', { color: '#FFAA00' })
     
     if (miniApp.ready.isAvailable()) {
       await miniApp.ready()
