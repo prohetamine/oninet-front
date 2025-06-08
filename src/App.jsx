@@ -25,6 +25,8 @@ const IconButton = styled.div`
   background-image: url("${props => props.src}");
   background-size: cover;
   background-position: center center;
+  -webkit-filter: drop-shadow(0px 0px 10px rgba(0, 0, 0, 0.1));
+  filter: drop-shadow(0px 0px 10px rgba(0, 0, 0, 0.1));
 `
 
 const ButtonBig = styled(motion.div)`
