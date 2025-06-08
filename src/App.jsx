@@ -1,14 +1,13 @@
 import { useEffect, useState } from 'react'
-import { motion, useAnimationFrame, motionValue, animate, useMotionValue, useTransform, AnimatePresence } from 'framer-motion'
+import { motion, motionValue, animate, useMotionValue, useTransform, AnimatePresence } from 'framer-motion'
 import styled from 'styled-components'
 import { postEvent } from '@telegram-apps/sdk'
+import like from './assets/like.svg'
+import dislike from './assets/dislike.svg'
+import warn from './assets/warn.svg'
+import hello from './assets/hello.svg'
 
-const Body = styled.div`
-  width: 100vh;
-  height: 100vw;
-`
-
-const Nav = styled.div`
+const Navigation = styled.div`
   width: 100%;
   height: 80px;
   position: absolute;
@@ -19,7 +18,13 @@ const Nav = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 20px;
+  gap: 15px;
+`
+
+const IconButton = styled.div`
+  background-image: url("${props => props.src}");
+  background-size: cover;
+  background-position: center center;
 `
 
 const ButtonBig = styled(motion.div)`
@@ -244,27 +249,41 @@ const App = () => {
             drag="x"
           />
         </AnimatePresence>
-        <Nav>
+        <Navigation>
+          <ButtonSmall 
+            onClick={() => {
+              window.swipeLeft()
+            }} 
+            whileTap={{ scale: 0.9 }}
+          >
+            <IconButton src={warn} style={{ width: '22px', height: '22px' }} />
+          </ButtonSmall>
           <ButtonBig 
             onClick={() => {
               window.swipeLeft()
             }} 
             whileTap={{ scale: 0.9 }}
-          >1</ButtonBig>
-          <ButtonSmall 
-            onClick={() => {
-              window.swipeRight()
-            }}
-            whileTap={{ scale: 0.9 }}
-          >2</ButtonSmall>
+          >
+            <IconButton src={dislike} style={{ width: '32px', height: '32px' }} />
+          </ButtonBig>
           <ButtonBig 
             onClick={() => {
               window.swipeRight()
               window.location.href = 'https://t.me/prohetamine'
             }} 
             whileTap={{ scale: 0.9 }}
-          >3</ButtonBig>
-        </Nav>
+          >
+            <IconButton src={like} style={{ width: '32px', height: '32px' }} />
+          </ButtonBig>
+          <ButtonSmall 
+            onClick={() => {
+              window.swipeRight()
+            }}
+            whileTap={{ scale: 0.9 }}
+          >
+            <IconButton src={hello} style={{ width: '22px', height: '22px' }} />
+          </ButtonSmall>
+        </Navigation>
       </motion.div>
   )
 }
