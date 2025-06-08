@@ -1,17 +1,20 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { motion, motionValue, animate, useMotionValue, useTransform, AnimatePresence } from 'framer-motion'
 import styled from 'styled-components'
 import { postEvent } from '@telegram-apps/sdk'
+import axios from 'axios'
+import Height from './height.jsx'
 import like from './assets/like.svg'
 import dislike from './assets/dislike.svg'
 import warn from './assets/warn.svg'
 import hello from './assets/hello.svg'
+import getCityById from './get-city-by-id.js'
 
 const Navigation = styled.div`
   width: 100%;
   height: 80px;
   position: absolute;
-  bottom: 10px;
+  bottom: 15px;
   left: 0px;
   z-index: 999999;
   opacity: 1;
@@ -57,8 +60,86 @@ const ButtonSmall = styled(motion.div)`
   box-shadow: 0px 2px 10px 0px rgba(108, 108, 108, 0.22);
 `
 
-const Card = ({ setIndex, index, drag, frontCard, width, height }) => {
+const CardWrapper = styled(motion.div)`
+  overflow: hidden;
+`
+
+const CardPhotoWrapper = styled.div`
+
+`
+
+const Photo = styled.div`
+  background-size: cover;
+  background-position: center center;
+`
+
+const Like = styled(motion.div)`
+  opacity: 1;
+  color: #13b08c;
+  border-radius: 15px;
+  border: 4px solid #13b08c;
+  font-size: 25px;
+  padding: 15px 20px;
+  z-index: 99999;
+  position: absolute;
+  -webkit-filter: drop-shadow(0px 0px 20px #666666ff);
+  filter: drop-shadow(0px 0px 20px #666666ff);
+  top: 60px;
+  right: 40px;
+  transform: rotateZ(30deg);
+  font-family: "Inter", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 500;
+  font-style: normal;
+`
+
+const Dislike = styled(motion.div)`
+  opacity: 1;
+  border: 4px solid #f10000;
+  color: #f10000;
+  border-radius: 15px;
+  font-size: 25px;
+  padding: 15px 20px;
+  z-index: 99999;
+  position: absolute;
+  -webkit-filter: drop-shadow(0px 0px 20px #666666ff);
+  filter: drop-shadow(0px 0px 20px #666666ff);
+  top: 60px;
+  left: 40px;
+  transform: rotateZ(-30deg);
+  font-family: "Inter", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 800;
+  font-style: normal;
+`
+
+const OverflowShadow = styled.div`
+  position: absolute;
+  left: 0px;
+  top: 0px;
+  width: 100%;
+  height: 100%;
+  overflow: scroll;
+  border-radius: 30px 30px 30px 30px;
+  display: flex;
+  align-items: flex-end;
+`
+
+const BioText = styled(motion.div)`
+  width: 100%;
+  padding: 30px 20px 1200px 20px;
+  color: #eee;
+  font-family: "Inter", sans-serif;
+  font-optical-sizing: auto;
+  font-style: normal;
+  box-sizing: border-box;
+  width: 100%;
+  background: linear-gradient(0deg, rgba(0, 0, 0, 0.52) 99%,rgba(0, 0, 0, 0) 100%);
+`
+
+const Card = ({ setIndex, index, drag, frontCard, width, height, user }) => {
   const [exitX, setExitX] = useState(0)
+  const [heightBio, setHeightBio] = useState(0)
 
   const x = useMotionValue(0)
       , scale = useTransform(x, [-150, 0, 150], [0.5, 1, 0.5])
@@ -66,20 +147,11 @@ const Card = ({ setIndex, index, drag, frontCard, width, height }) => {
           clamp: false
         })
 
-  const xInput = [-10, 0, 10]
-
-  const color = useTransform(x, xInput, [
-      "rgb(211, 9, 225)",
-      "rgb(68, 0, 255)",
-      "rgb(3, 209, 0)",
-  ])
-  
-  const tickPath = useTransform(x, [1, 10], [0, 1])
-  const crossPathA = useTransform(x, [-1, -5.5], [0, 1])
-  const crossPathB = useTransform(x, [-5.0, -10], [0, 1])
+  const crossPathA = useTransform(x, [-5, -30], [0, 1])
+  const crossPathB = useTransform(x, [5, 30], [0, 1])
 
   const variantsFrontCard = {
-          animate: { scale: 1, y: 0, opacity: 1 },
+          animate: { scale: 1, y: 2, opacity: 1 },
           exit: (custom) => ({
             x: custom * 10,
             y: Math.abs(custom * 5),
@@ -90,11 +162,7 @@ const Card = ({ setIndex, index, drag, frontCard, width, height }) => {
         }
       , variantsBackCard = {
           initial: { scale: 0, y: -10, opacity: 0 },
-          animate: { scale: 0.98, y: 10, opacity: 1 }
-        }
-      , variantsBackCard2 = {
-          initial: { scale: 0, y: -10, opacity: 0 },
-          animate: { scale: 0.95, y: 20, opacity: 1 }
+          animate: { scale: 0.98, y: 0, opacity: 1 }
         }
 
   const handleDragEnd = (_, info) => {
@@ -105,7 +173,7 @@ const Card = ({ setIndex, index, drag, frontCard, width, height }) => {
     if (info.offset.x > 100) {
       setExitX(250)
       setIndex(index + 1)
-      window.location.href = 'https://t.me/prohetamine'
+      window.location.href = `https://t.me/${user.system_username}`
       setTimeout(() => {
         postEvent('web_app_close')
       }, 5000)
@@ -136,6 +204,19 @@ const Card = ({ setIndex, index, drag, frontCard, width, height }) => {
     animate(a, 250)
   }
 
+  const profile_generate = user => {
+    let text = ''
+
+    let nm = (user?.etc_testBottomInternetRate[0] > user?.etc_testBottomInternetRate[1]) ? `Нижнометр: ${`${((rate => rate > 100 ? 100 : rate < 0 ? 0 : rate)((100 / (user?.etc_testBottomInternetRate[0] + user?.etc_testBottomInternetRate[1])) * user?.etc_testBottomInternetRate[0] || 0)).toFixed(1)}`}% 📊` : ''
+
+    text += user?.location !== '999|666' ? `<b>${getCityById(user?.location).title} ${getCityById(user?.location).flag} 📍</b><br />` : `<b>Анонимный 🏴‍☠️ 📍</b><br />`
+    text += user?.location !== '999|666' ?  user?.privacyCity === 0 ? '' : user?.privacyCity === 1 ? `Мой и ближайшие города 🌇<br />` : `Только мой город 🏡<br />` : ''
+    text += `<br />${user?.text}${nm ? `<br /><br />` : ''}`
+    text += nm
+    
+    return text
+  }
+
   return (
     <motion.div
       style={{
@@ -152,7 +233,7 @@ const Card = ({ setIndex, index, drag, frontCard, width, height }) => {
       drag={drag}
       dragConstraints={{ top: 0, right: 0, bottom: 0, left: 0 }}
       onDragEnd={handleDragEnd}
-      variants={frontCard === 0 ? variantsFrontCard : frontCard === 1 ? variantsBackCard : variantsBackCard2}
+      variants={frontCard === 0 ? variantsFrontCard : variantsBackCard}
       initial='initial'
       animate='animate'
       exit='exit'
@@ -163,7 +244,7 @@ const Card = ({ setIndex, index, drag, frontCard, width, height }) => {
           : { scale: { duration: 0.2 }, opacity: { duration: 0.4 } }
       }
     >
-      <motion.div
+      <CardWrapper
         style={{
           width,
           height: height - 16,
@@ -171,51 +252,37 @@ const Card = ({ setIndex, index, drag, frontCard, width, height }) => {
           scale,
           borderRadius: 30,
           backgroundColor: '#fff',
-          boxShadow: (frontCard === 0 || frontCard === 1) ? '0px 2px 10px 0px rgba(108, 108, 108, 0.22)' : '0px 0px 0px 1px #ddd',
+          boxShadow: frontCard === 0 ? '0px 2px 10px 0px rgba(108, 108, 108, 0.22)' : '0px 0px 0px 1px #ddd',
           textWrap: 'wrap'
         }}
       >
-        <motion.div>
-            <svg className="progress-icon" viewBox="0 0 50 50">
-                <motion.path
-                    fill="none"
-                    strokeWidth="2"
-                    stroke={color}
-                    d="M 0, 20 a 20, 20 0 1,0 40,0 a 20, 20 0 1,0 -40,0"
-                    style={{
-                        x: 5,
-                        y: 5,
-                    }}
-                />
-                <motion.path
-                    id="tick"
-                    fill="none"
-                    strokeWidth="2"
-                    stroke={color}
-                    d="M14,26 L 22,33 L 35,16"
-                    strokeDasharray="0 1"
-                    style={{ pathLength: tickPath }}
-                />
-                <motion.path
-                    fill="none"
-                    strokeWidth="2"
-                    stroke={color}
-                    d="M17,17 L33,33"
-                    strokeDasharray="0 1"
-                    style={{ pathLength: crossPathA }}
-                />
-                <motion.path
-                    id="cross"
-                    fill="none"
-                    strokeWidth="2"
-                    stroke={color}
-                    d="M33,17 L17,33"
-                    strokeDasharray="0 1"
-                    style={{ pathLength: crossPathB }}
-                />
-            </svg>
-        </motion.div>
-      </motion.div>
+        {
+          user 
+            ? (
+              <>
+                <CardPhotoWrapper>
+                  <Photo style={{ backgroundImage: `url(${user?.media[0]})`, width: '100%', height: height - 16 }}></Photo>
+                </CardPhotoWrapper>
+                <Like style={{ opacity: crossPathB }}>LIKE</Like>
+                <Dislike style={{ opacity: crossPathA }}>DISLIKE</Dislike>
+                <OverflowShadow>
+                  <Height onHeight={data => setHeightBio(data)}>
+                    <BioText 
+                      drag={'y'}
+                      initial={{ y: 0 }}
+                      animate={{ y: heightBio > 140 ? heightBio - 140 : 0 }}
+                      dragConstraints={{ top: 1170, bottom: heightBio - 80 }}
+                      dangerouslySetInnerHTML={{ __html: profile_generate(user) }}
+                    ></BioText>
+                  </Height>
+                </OverflowShadow>
+              </>
+            ) 
+            : (
+              null
+            )
+        }
+      </CardWrapper>
     </motion.div>
   )
 }
@@ -223,25 +290,37 @@ const Card = ({ setIndex, index, drag, frontCard, width, height }) => {
 const App = () => {
   const [index, setIndex] = useState(0)
 
+  const [users, setUsers] = useState({})
+
+  useEffect(() => {
+    const timeId = setTimeout(() => {
+      axios.get(`http://localhost:8989/user?offset=${index}`)
+        .then(({ data }) => {
+          const users = data.reduce((ctx, elem, i) => {
+            ctx[index + i] = elem
+            return ctx
+          }, {})
+
+          setUsers(u => ({ ...u, ...users }))
+        })
+    }, 100)
+
+    return () => clearTimeout(timeId)
+  }, [index])
+
   const width = window.innerWidth - 50
       , height = window.innerHeight - 100
 
   return (
-      <motion.div style={{ width: '100vw', height: '100vh', display: 'flex', justifyContent: 'center', alignItems: 'flex-start', position: "relative" }}>
+      <motion.div style={{ width: '100vw', height: '100vh', display: 'flex', justifyContent: 'center', alignItems: 'flex-start', position: 'relative' }}>
         <AnimatePresence>
-          <Card 
-            width={width}
-            height={height}
-            index={index + 2} 
-            key={index + 2} 
-            frontCard={2} 
-          />
           <Card 
             width={width}
             height={height}
             index={index + 1} 
             key={index + 1}
             frontCard={1} 
+            user={users[index + 1]}
           />
           <Card
             width={width}
@@ -251,12 +330,14 @@ const App = () => {
             index={index}
             setIndex={setIndex}
             drag="x"
+            user={users[index]}
           />
         </AnimatePresence>
         <Navigation>
           <ButtonSmall 
             onClick={() => {
               window.swipeLeft()
+              window.location.href = `https://t.me/oninetbot?start=r_${users[index]?.system_callHashId}`
             }} 
             whileTap={{ scale: 0.9 }}
           >
@@ -273,7 +354,7 @@ const App = () => {
           <ButtonBig 
             onClick={() => {
               window.swipeRight()
-              window.location.href = 'https://t.me/prohetamine'
+              window.location.href = `https://t.me/${users[index]?.system_username}`
             }} 
             whileTap={{ scale: 0.9 }}
           >
@@ -282,6 +363,7 @@ const App = () => {
           <ButtonSmall 
             onClick={() => {
               window.swipeRight()
+              // ..
             }}
             whileTap={{ scale: 0.9 }}
           >
