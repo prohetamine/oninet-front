@@ -11,9 +11,9 @@ const initializeTelegramSDK = async () => {
     postEvent('web_app_expand')
     postEvent('web_app_setup_main_button', { is_visible: false })
     postEvent('web_app_setup_swipe_behavior', { allow_vertical_swipe: false })
-    postEvent('web_app_set_background_color', { color: '#EEEEEE' })
-    postEvent('web_app_set_bottom_bar_color', { color: '#FFAA00' })
-    postEvent('web_app_set_header_color', { color: '#FF00FF' });
+    postEvent('web_app_set_background_color', { color: '#15B585' })
+    postEvent('web_app_set_bottom_bar_color', { color: '#15B585' })
+    postEvent('web_app_set_header_color', { color: '#0EA795' });
     
     if (miniApp.ready.isAvailable()) {
       await miniApp.ready()
