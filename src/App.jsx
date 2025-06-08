@@ -22,7 +22,7 @@ const Nav = styled.div`
   gap: 15px;
 `
 
-const ButtonBig = styled.div`
+const ButtonBig = styled(motion.div)`
   width: 65px;
   height: 65px;
   background: #fff;
@@ -33,7 +33,7 @@ const ButtonBig = styled.div`
   border-radius: 100%;
 `
 
-const ButtonSmall = styled.div`
+const ButtonSmall = styled(motion.div)`
   width: 55px;
   height: 55px;
   background: #fff;
@@ -46,6 +46,7 @@ const ButtonSmall = styled.div`
 
 const Card = ({ setIndex, index, drag, frontCard, width, height }) => {
   const [exitX, setExitX] = useState(0)
+  window.setExitX = setExitX
 
   const x = useMotionValue(0)
       , scale = useTransform(x, [-150, 0, 150], [0.5, 1, 0.5])
@@ -217,9 +218,15 @@ const App = () => {
           />
         </AnimatePresence>
         <Nav>
-          <ButtonBig>1</ButtonBig>
-          <ButtonSmall>2</ButtonSmall>
-          <ButtonBig>3</ButtonBig>
+          <ButtonBig 
+            onClikc={() => {
+              window.setExitX(-250)
+              setIndex(index + 1)
+            }} 
+            whileTap={{ scale: 0.9 }}
+          >1</ButtonBig>
+          <ButtonSmall whileTap={{ scale: 0.9 }}>2</ButtonSmall>
+          <ButtonBig whileTap={{ scale: 0.9 }}>3</ButtonBig>
         </Nav>
       </motion.div>
   )
