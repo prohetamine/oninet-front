@@ -38,6 +38,7 @@ const ButtonBig = styled(motion.div)`
   border-radius: 100%;
   cursor: pointer;
   user-select: none;
+  box-shadow: 0px 2px 10px 0px rgba(108, 108, 108, 0.22);
 `
 
 const ButtonSmall = styled(motion.div)`
@@ -51,6 +52,7 @@ const ButtonSmall = styled(motion.div)`
   border-radius: 100%;
   cursor: pointer;
   user-select: none;
+  box-shadow: 0px 2px 10px 0px rgba(108, 108, 108, 0.22);
 `
 
 const Card = ({ setIndex, index, drag, frontCard, width, height }) => {
