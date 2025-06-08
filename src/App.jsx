@@ -19,7 +19,7 @@ const Nav = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 15px;
+  gap: 20px;
 `
 
 const ButtonBig = styled(motion.div)`
@@ -32,6 +32,7 @@ const ButtonBig = styled(motion.div)`
   align-items: center;
   border-radius: 100%;
   cursor: pointer;
+  user-select: none;
 `
 
 const ButtonSmall = styled(motion.div)`
@@ -44,6 +45,7 @@ const ButtonSmall = styled(motion.div)`
   align-items: center;
   border-radius: 100%;
   cursor: pointer;
+  user-select: none;
 `
 
 const Card = ({ setIndex, index, drag, frontCard, width, height }) => {
@@ -120,7 +122,6 @@ const Card = ({ setIndex, index, drag, frontCard, width, height }) => {
       if (data === 250) {
         setExitX(250)
         setIndex(index + 1)
-        window.location.href = 'https://t.me/prohetamine'
       }
     })
     animate(a, 250)
@@ -250,10 +251,16 @@ const App = () => {
             }} 
             whileTap={{ scale: 0.9 }}
           >1</ButtonBig>
-          <ButtonSmall whileTap={{ scale: 0.9 }}>2</ButtonSmall>
+          <ButtonSmall 
+            onClick={() => {
+              window.swipeRight()
+            }}
+            whileTap={{ scale: 0.9 }}
+          >2</ButtonSmall>
           <ButtonBig 
             onClick={() => {
               window.swipeRight()
+              window.location.href = 'https://t.me/prohetamine'
             }} 
             whileTap={{ scale: 0.9 }}
           >3</ButtonBig>
