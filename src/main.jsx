@@ -6,7 +6,9 @@ import { init, miniApp } from '@telegram-apps/sdk'
 
 const initializeTelegramSDK = async () => {
   try {
-    await init()
+    await init({
+      disableVerticalSwipes: true
+    })
 
     if (miniApp.ready.isAvailable()) {
       await miniApp.ready()
