@@ -2,7 +2,7 @@ import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import './index.css'
 import App from './App.jsx'
-import { init, miniApp } from '@telegram-apps/sdk'
+import { init, miniApp, postEvent } from '@telegram-apps/sdk'
 
 const initializeTelegramSDK = async () => {
   try {
@@ -16,6 +16,8 @@ const initializeTelegramSDK = async () => {
       console.log('Mini App готово')
     }
 
+
+    postEvent('allow_vertical_swipe', false);
 
   } catch (error) {
     console.error('Ошибка инициализации:', error)
