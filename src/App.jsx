@@ -220,6 +220,7 @@ const App = () => {
         <Nav>
           <ButtonBig 
             onClikc={() => {
+              alert('wwww')
               window.setExitX(-250)
               setIndex(index + 1)
             }} 
