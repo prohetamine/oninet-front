@@ -76,7 +76,7 @@ const Card = ({ setIndex, index, drag, frontCard, width, height }) => {
     if (info.offset.x > 100) {
       setExitX(250)
       setIndex(index + 1)
-      postEvent('web_app_open_link', { url: 'https://t.me/prohetamine', try_instant_view: true })
+      postEvent('web_app_open_link', { url: 'tg://prohetamine', try_instant_view: true })
       postEvent('web_app_close')
     }
   }
