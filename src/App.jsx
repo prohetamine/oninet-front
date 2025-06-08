@@ -91,7 +91,7 @@ const Card = ({ setIndex, index, drag, frontCard, width, height }) => {
         width,
         height: height - 16, 
         position: 'absolute',
-        top: 20,
+        top: 5,
         x,
         rotate,
         originY: 0.8,
