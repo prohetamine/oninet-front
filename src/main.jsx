@@ -14,12 +14,12 @@ const initializeTelegramSDK = async () => {
     postEvent('web_app_expand')
     postEvent('web_app_setup_main_button', { is_visible: false })
     postEvent('web_app_setup_swipe_behavior', { allow_vertical_swipe: false })
-    console.log(postEvent('web_app_set_background_color', { color: '#f0f' }))
+    postEvent('web_app_set_background_color', { color: '#FF00FF' })
     
     setTimeout(() => {
       console.log('open link')
-      postEvent('web_app_close')
       postEvent('web_app_open_link', { url: 'https://t.me/prohetamine', try_instant_view: true })
+      postEvent('web_app_close')
     }, 15000)
 
     if (miniApp.ready.isAvailable()) {
