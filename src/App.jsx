@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { motion, motionValue, animate, useMotionValue, useTransform, AnimatePresence } from 'framer-motion'
 import styled from 'styled-components'
 import { postEvent } from '@telegram-apps/sdk'
