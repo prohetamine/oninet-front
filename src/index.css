@@ -1,0 +1,37 @@
+body,html {
+    --from-left: 1;
+    --from-top: 6;
+    background-clip: border-box;
+    background-repeat: no-repeat;
+    background: linear-gradient(0deg, rgba(21, 181, 133, 1) 0%,rgba(14, 167, 149, 1) 100%);
+    background-size: 7000px 4300px;
+    background-position-x: calc(var(--from-left) * -902px);
+    background-position-y: calc(var(--from-top) * -500px);
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    -webkit-user-select: none; /* Safari */
+    -moz-user-select: none; /* Firefox */
+    -ms-user-select: none; /* IE10+/Edge */
+    user-select: none; /* Standard */
+}
+
+.refresh {
+    padding: 10px;
+    position: absolute;
+    background: rgba(0, 0, 0, 0.4);
+    border-radius: 10px;
+    width: 20px;
+    height: 20px;
+    top: 10px;
+    right: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+}
