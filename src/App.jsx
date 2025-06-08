@@ -11,12 +11,37 @@ const Body = styled.div`
 const Nav = styled.div`
   width: 100%;
   height: 80px;
-  background: #fa0;
   position: absolute;
   bottom: 10px;
   left: 0px;
   z-index: 999999;
   opacity: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 15px;
+`
+
+const ButtonBig = styled.div`
+  width: 65px;
+  height: 65px;
+  background: #fff;
+  color: #000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 100%;
+`
+
+const ButtonSmall = styled.div`
+  width: 55px;
+  height: 55px;
+  background: #fff;
+  color: #000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 100%;
 `
 
 const Card = ({ setIndex, index, drag, frontCard, width, height }) => {
@@ -191,7 +216,11 @@ const App = () => {
             drag="x"
           />
         </AnimatePresence>
-        <Nav></Nav>
+        <Nav>
+          <ButtonBig>1</ButtonBig>
+          <ButtonSmall>2</ButtonSmall>
+          <ButtonBig>3</ButtonBig>
+        </Nav>
       </motion.div>
   )
 }
