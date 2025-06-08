@@ -8,26 +8,15 @@ const Body = styled.div`
   height: 100vw;
 `
 
-const Head = styled.div`
-  width: 100%;
-  height: 50px;
-  background: #fa0;
-  position: absolute;
-  top: 0px;
-  left: 0px;
-  z-index: 999999;
-  opacity: 0;
-`
-
 const Nav = styled.div`
   width: 100%;
-  height: 50px;
+  height: 80px;
   background: #fa0;
   position: absolute;
   bottom: 0px;
   left: 0px;
   z-index: 999999;
-  opacity: 0;
+  opacity: 1;
 `
 
 const Card = ({ setIndex, index, drag, frontCard, width, height }) => {
@@ -177,7 +166,6 @@ const App = () => {
 
   return (
       <motion.div style={{ width: '100vw', height: '100vh', display: 'flex', justifyContent: 'center', alignItems: 'flex-start', position: "relative" }}>
-        {/* <Head></Head> */}
         <AnimatePresence>
           <Card 
             width={width}
@@ -203,7 +191,7 @@ const App = () => {
             drag="x"
           />
         </AnimatePresence>
-        {/* <Nav></Nav> */}
+        <Nav></Nav>
       </motion.div>
   )
 }
