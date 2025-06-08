@@ -16,8 +16,10 @@ const initializeTelegramSDK = async () => {
       console.log('Mini App готово')
     }
 
-
-    postEvent('allow_vertical_swipe', false);
+    postEvent('web_app_expand')
+    postEvent('web_app_setup_main_button', { is_visible: false })
+    postEvent('web_app_setup_swipe_behavior', { allow_vertical_swipe: false })
+    postEvent('web_app_ready')
 
   } catch (error) {
     console.error('Ошибка инициализации:', error)
