@@ -1,4 +1,7 @@
 #!/usr/bin/env sh
+git add .    
+git commit -m 'update'
+git push
 set -e
 npm run build
 cp dist/index.html dist/404.html
