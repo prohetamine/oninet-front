@@ -116,7 +116,7 @@ const Card = ({ setIndex, index, drag, frontCard, width, height }) => {
   window.swipeRight = () => {
     const a = motionValue(0)
     a.on('change', data => {
-      x.updateAndNotify(-data)
+      x.updateAndNotify(data)
       if (data === 250) {
         setExitX(250)
         setIndex(index + 1)
