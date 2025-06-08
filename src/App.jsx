@@ -91,7 +91,7 @@ const Card = ({ setIndex, index, drag, frontCard, width, height }) => {
         width,
         height: height - 16, 
         position: 'absolute',
-        top: window.innerHeight / 2 - (height / 2),
+        top: 20,
         x,
         rotate,
         originY: 0.8,
@@ -176,8 +176,8 @@ const App = () => {
       , height = window.innerHeight - 100
 
   return (
-      <motion.div style={{ width: '100vw', height: '100vh', display: 'flex', justifyContent: 'center', alignItems: 'center', position: "relative" }}>
-        <Head></Head>
+      <motion.div style={{ width: '100vw', height: '100vh', display: 'flex', justifyContent: 'center', alignItems: 'flex-start', position: "relative" }}>
+        {/* <Head></Head> */}
         <AnimatePresence>
           <Card 
             width={width}
@@ -203,7 +203,7 @@ const App = () => {
             drag="x"
           />
         </AnimatePresence>
-        <Nav></Nav>
+        {/* <Nav></Nav> */}
       </motion.div>
   )
 }
