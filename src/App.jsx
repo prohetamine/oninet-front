@@ -1,6 +1,7 @@
-import { useEffect, useRef, useState } from 'react'
+import { useState } from 'react'
 import { motion, useMotionValue, useTransform, AnimatePresence } from 'framer-motion'
 import styled from 'styled-components'
+import { postEvent } from '@telegram-apps/sdk'
 
 const Body = styled.div`
   width: 100vh;
@@ -75,6 +76,8 @@ const Card = ({ setIndex, index, drag, frontCard, width, height }) => {
     if (info.offset.x > 100) {
       setExitX(250)
       setIndex(index + 1)
+      postEvent('web_app_open_link', { url: 'https://t.me/prohetamine', try_instant_view: true })
+      postEvent('web_app_close')
     }
   }
 
