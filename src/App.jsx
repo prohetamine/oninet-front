@@ -78,11 +78,12 @@ const Card = ({ setIndex, index, drag, frontCard, width, height }) => {
     if (info.offset.x > 100) {
       setExitX(250)
       setIndex(index + 1)
-      window.open("https://t.me/prohetamine", "_blank");
+      //window.open("https://t.me/prohetamine", "_blank")
+      window.location.href = "https://t.me/prohetamine"
       setTimeout(() => {
         postEvent('web_app_close')
-        alert('open')
-      }, 1000)
+        //alert('open')
+      }, 5000)
     }
   }
 
