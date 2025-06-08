@@ -65,7 +65,7 @@ Error generating stack: `+i.message+`
   height: 80px;
   background: #fa0;
   position: absolute;
-  bottom: 0px;
+  bottom: 10px;
   left: 0px;
   z-index: 999999;
   opacity: 1;
