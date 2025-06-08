@@ -1,5 +1,5 @@
-import { useState } from 'react'
-import { motion, useMotionValue, useTransform, AnimatePresence } from 'framer-motion'
+import { useEffect, useState } from 'react'
+import { motion, useAnimationFrame, motionValue, animate, useMotionValue, useTransform, AnimatePresence } from 'framer-motion'
 import styled from 'styled-components'
 import { postEvent } from '@telegram-apps/sdk'
 
@@ -31,6 +31,7 @@ const ButtonBig = styled(motion.div)`
   justify-content: center;
   align-items: center;
   border-radius: 100%;
+  cursor: pointer;
 `
 
 const ButtonSmall = styled(motion.div)`
@@ -42,11 +43,11 @@ const ButtonSmall = styled(motion.div)`
   justify-content: center;
   align-items: center;
   border-radius: 100%;
+  cursor: pointer;
 `
 
 const Card = ({ setIndex, index, drag, frontCard, width, height }) => {
   const [exitX, setExitX] = useState(0)
-  window.setExitX = setExitX
 
   const x = useMotionValue(0)
       , scale = useTransform(x, [-150, 0, 150], [0.5, 1, 0.5])
@@ -98,6 +99,31 @@ const Card = ({ setIndex, index, drag, frontCard, width, height }) => {
         postEvent('web_app_close')
       }, 5000)
     }
+  }
+
+  window.swipeLeft = () => {
+    const a = motionValue(0)
+    a.on('change', data => {
+      x.updateAndNotify(-data)
+      if (data === 250) {
+        setExitX(-250)
+        setIndex(index + 1)
+      }
+    })
+    animate(a, 250)
+  }
+
+  window.swipeRight = () => {
+    const a = motionValue(0)
+    a.on('change', data => {
+      x.updateAndNotify(-data)
+      if (data === 250) {
+        setExitX(250)
+        setIndex(index + 1)
+        window.location.href = 'https://t.me/prohetamine'
+      }
+    })
+    animate(a, 250)
   }
 
   return (
@@ -219,15 +245,18 @@ const App = () => {
         </AnimatePresence>
         <Nav>
           <ButtonBig 
-            onClikc={() => {
-              alert('wwww')
-              window.setExitX(-250)
-              setIndex(index + 1)
+            onClick={() => {
+              window.swipeLeft()
             }} 
             whileTap={{ scale: 0.9 }}
           >1</ButtonBig>
           <ButtonSmall whileTap={{ scale: 0.9 }}>2</ButtonSmall>
-          <ButtonBig whileTap={{ scale: 0.9 }}>3</ButtonBig>
+          <ButtonBig 
+            onClick={() => {
+              window.swipeRight()
+            }} 
+            whileTap={{ scale: 0.9 }}
+          >3</ButtonBig>
         </Nav>
       </motion.div>
   )
