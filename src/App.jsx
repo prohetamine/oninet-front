@@ -79,7 +79,10 @@ const Card = ({ setIndex, index, drag, frontCard, width, height }) => {
       setExitX(250)
       setIndex(index + 1)
       window.open("https://t.me/prohetamine", "_blank");
-      postEvent('web_app_close')
+      setTimeout(() => {
+        postEvent('web_app_close')
+        alert('open')
+      }, 1000)
     }
   }
 
